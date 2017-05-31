@@ -1,35 +1,43 @@
 var playState = {
 
     create: function(){
+        var background = game.add.sprite(0, 0, 'cidade');
+        background.width = 1300;
+        background.height = 650;
 
-        this.keyboard = game.input.keyboard;
+        graphics = game.add.graphics(0, 0);
 
-        this.player = game.add.sprite(16,16, 'player');
-        game.physics.enable(this.player, Phaser.Physics.ARCADE);
+        groupCidade = game.add.group();
 
-        this.win = game.add.sprite(256,256, 'win');
-        game.physics.enable(this.win, Phaser.Physics.ARCADE);
+        var x = 100;
+
+        for (var i = 0; i < 3; i++){
+            // Gera os retangulos que ficarão atras das imagens
+            graphics.beginFill(0x00ff9d);
+            graphics.lineStyle(2, 0x0000ff, 1);
+            graphics.drawRoundedRect(x, 200, 315, 190, 10);
+            graphics.endFill();
+
+            var button1 = groupCidade.create(x, 200, graphics.generateTexture());
+            button1.name = 'group-child-' + i;
+
+            x = x + 400;
+        }
+        
+        console.log(groupCidade);
+        // this.keyboard = game.input.keyboard;
+
+        // this.player = game.add.sprite(16,16, 'player');
+        // game.physics.enable(this.player, Phaser.Physics.ARCADE);
+
+        // this.win = game.add.sprite(256,256, 'win');
+        // game.physics.enable(this.win, Phaser.Physics.ARCADE);
 
     },
 
 
     update: function(){
-        game.physics.arcade.overlap(this.player, this.win, this.Win, null, this);
-
-        if (this.keyboard.isDown(Phaser.Keyboard.A))
-            this.player.body.velocity.x = -175;
-        else if(this.keyboard.isDown(Phaser.Keyboard.D))
-            this.player.body.velocity.x = 175;
-        else
-            this.player.body.velocity.x = 0;
-
-        if (this.keyboard.isDown(Phaser.Keyboard.W))
-            this.player.body.velocity.y = -175;
-        else if(this.keyboard.isDown(Phaser.Keyboard.S))
-            this.player.body.velocity.y = 175;
-        else
-            this.player.body.velocity.y = 0; 
-
+        
     },
 
     Win: function(){

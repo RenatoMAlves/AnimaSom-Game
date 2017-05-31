@@ -2,8 +2,8 @@ var menuState = {
     
     create: function(){
         var background = game.add.sprite(0, 0, 'floresta');
-        background.width = 1366;
-        background.height = 720;
+        background.width = 1300;
+        background.height = 650;
 
         var logo = game.add.sprite(background.width-700, background.height-650, 'logoGame'); 
         logo.width = 628;

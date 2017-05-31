@@ -4,9 +4,10 @@ var loadState = {
         var loadingLabel = game.add.text(80, 150, 'Loading...',
                                         {font: '30px Courier', fill: "#ffffff"});
 
-        game.load.image('player', '../../images/player.png');
+        game.load.image('player', '../../images/yellow.png');
         game.load.image('win', '../../images/win.png');
         game.load.image('floresta', '../../images/animaSom/floresta.png');
+        game.load.image('cidade', '../../images/animaSom/background-cidade.jpg');
         game.load.image('cachorro', '../../images/animaSom/cachorro.png');
         game.load.image('gato', '../../images/animaSom/gato.png');
         game.load.image('passaro', '../../images/animaSom/passaro.png');
