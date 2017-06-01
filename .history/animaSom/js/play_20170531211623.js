@@ -9,24 +9,20 @@ var playState = {
 
         groupCidade = game.add.group();
 
-        groupCidade.inputEnableChildren = true;
-
         var x = 100;
 
         for (var i = 0; i < 3; i++){
             // Gera os retangulos que ficarão atras das imagens
-            graphics.beginFill(0xFFFFFF);
+            graphics.beginFill(0xff7b00);
             graphics.lineStyle(3, 0x05005e, 1);
             graphics.drawRoundedRect(x, 200, 315, 190, 10);
             graphics.endFill();
 
-            var button = groupCidade.create(x, 200, graphics.generateTexture());
-            button.tint = 0xff8800;
-            button.name = 'groupCidade-child-' + i;
+            var button1 = groupCidade.create(x, 200, graphics.generateTexture());
+            button1.name = 'group-child-' + i;
 
             x = x + 400;
         }
-        graphics.destroy();
 
         var cachorro = game.add.sprite(110, 210, 'cachorro'); 
         cachorro.width = 300;
@@ -45,24 +41,11 @@ var playState = {
         passaro.width = 300;
         passaro.height = 170;
         
-        groupCidade.onChildInputDown.add(onDown, this);
-        groupCidade.onChildInputOver.add(onOver, this);
-        groupCidade.onChildInputOut.add(onOut, this);
-        
+        console.log(groupCidade);
+        // groupCidade.onChildInputDown.add(onDown, this);
+        // groupCidade.onChildInputOver.add(onOver, this);
+        // groupCidade.onChildInputOut.add(onOut, this);
 
-        function onDown (sprite) {
-            sprite.tint = 0x00ff00;
-        }
-
-        function onOver (sprite) {
-            sprite.tint = 0xffff00;
-        }
-
-        function onOut (sprite) {
-            sprite.tint = 0xff8800;
-            // sprite.tint = Math.random() * 0xffffff;
-
-        }
 
     },
 

@@ -15,13 +15,13 @@ var playState = {
 
         for (var i = 0; i < 3; i++){
             // Gera os retangulos que ficarão atras das imagens
-            graphics.beginFill(0xFFFFFF);
+            graphics.beginFill();
             graphics.lineStyle(3, 0x05005e, 1);
             graphics.drawRoundedRect(x, 200, 315, 190, 10);
             graphics.endFill();
 
             var button = groupCidade.create(x, 200, graphics.generateTexture());
-            button.tint = 0xff8800;
+            button.tint = Math.random() * 0xffffff;
             button.name = 'groupCidade-child-' + i;
 
             x = x + 400;
@@ -59,8 +59,7 @@ var playState = {
         }
 
         function onOut (sprite) {
-            sprite.tint = 0xff8800;
-            // sprite.tint = Math.random() * 0xffffff;
+            sprite.tint = 0xffc999;
 
         }
 

@@ -21,7 +21,7 @@ var playState = {
             graphics.endFill();
 
             var button = groupCidade.create(x, 200, graphics.generateTexture());
-            button.tint = 0xff8800;
+            button.tint = Math.random() * 0xffffff;
             button.name = 'groupCidade-child-' + i;
 
             x = x + 400;
@@ -59,8 +59,8 @@ var playState = {
         }
 
         function onOut (sprite) {
-            sprite.tint = 0xff8800;
-            // sprite.tint = Math.random() * 0xffffff;
+            sprite.tint = Math.random() * 0xffffff;
+            sprite.tint = Math.random() * 0xffffff;
 
         }
 

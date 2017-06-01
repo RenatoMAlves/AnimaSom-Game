@@ -59,7 +59,7 @@ var playState = {
         }
 
         function onOut (sprite) {
-            sprite.tint = 0xff8800;
+            sprite.tint = 0xffffff;
             // sprite.tint = Math.random() * 0xffffff;
 
         }

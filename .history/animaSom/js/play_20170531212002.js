@@ -9,24 +9,21 @@ var playState = {
 
         groupCidade = game.add.group();
 
-        groupCidade.inputEnableChildren = true;
-
         var x = 100;
 
         for (var i = 0; i < 3; i++){
             // Gera os retangulos que ficarão atras das imagens
-            graphics.beginFill(0xFFFFFF);
+            graphics.beginFill(0xff7b00);
             graphics.lineStyle(3, 0x05005e, 1);
             graphics.drawRoundedRect(x, 200, 315, 190, 10);
             graphics.endFill();
 
-            var button = groupCidade.create(x, 200, graphics.generateTexture());
-            button.tint = 0xff8800;
-            button.name = 'groupCidade-child-' + i;
+            var button1 = groupCidade.create(x, 200, graphics.generateTexture());
+            button1.name = 'group-child-' + i;
 
             x = x + 400;
         }
-        graphics.destroy();
+        gra
 
         var cachorro = game.add.sprite(110, 210, 'cachorro'); 
         cachorro.width = 300;
@@ -51,16 +48,19 @@ var playState = {
         
 
         function onDown (sprite) {
-            sprite.tint = 0x00ff00;
+            sprite.tint = 0x0ece1e;
         }
 
         function onOver (sprite) {
-            sprite.tint = 0xffff00;
+             console.log(teste);
+            sprite.tint = 0x0033ff;
         }
 
         function onOut (sprite) {
-            sprite.tint = 0xff8800;
-            // sprite.tint = Math.random() * 0xffffff;
+
+            text = "onOut: " + sprite.name;
+
+            sprite.tint = 0xffffff;
 
         }
 
