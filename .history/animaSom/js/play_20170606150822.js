@@ -48,7 +48,6 @@ var playState = {
         game.time.events.add(Phaser.Timer.SECOND * 2, start, this);
 
         function start(){
-            
             ocultarOpcoes(1);
             groupCidade.children[0].x += 230; 
             cachorro.x += 230;
@@ -69,13 +68,13 @@ var playState = {
             cachorro.y += 70;
             background.alpha = 0.5;
 
-            apresentarOpcoes(1);
+            apresentarOpcoes(){}
 
             activateButtons();
         }
 
         function ocultarOpcoes(numero){
-            background.alpha = 0.5;
+            game.add.tween(background).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
             if(numero == 1){
                 groupCidade.children[1].alpha = 0;
                 groupCidade.children[2].alpha = 0;
@@ -84,7 +83,7 @@ var playState = {
             }
         }
 
-        function apresentarOpcoes(numero){
+        function apresentarOpcoes(){
             game.add.tween(background).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
             if(numero == 1){
                 game.add.tween(groupCidade.children[1]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);

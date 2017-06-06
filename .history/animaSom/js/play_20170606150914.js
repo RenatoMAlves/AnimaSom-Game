@@ -48,7 +48,6 @@ var playState = {
         game.time.events.add(Phaser.Timer.SECOND * 2, start, this);
 
         function start(){
-            
             ocultarOpcoes(1);
             groupCidade.children[0].x += 230; 
             cachorro.x += 230;
@@ -69,7 +68,13 @@ var playState = {
             cachorro.y += 70;
             background.alpha = 0.5;
 
-            apresentarOpcoes(1);
+            // game.add.tween(groupCidade.children[1]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+            // game.add.tween(groupCidade.children[2]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+            // game.add.tween(gato).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+            // game.add.tween(passaro).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+            // game.add.tween(background).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+
+            apresentarOpcoes()1
 
             activateButtons();
         }

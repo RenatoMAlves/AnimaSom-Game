@@ -45,59 +45,42 @@ var playState = {
         passaro.width = 300;
         passaro.height = 170;
 
-        game.time.events.add(Phaser.Timer.SECOND * 2, start, this);
+        start();
+
+        initial();
+
+        game.time.events.add(Phaser.Timer.SECOND * 4, inital, this);
+        
+        // groupCidade.onChildInputDown.add(onDown, this);
+        // groupCidade.onChildInputOver.add(onOver, this);
+        // groupCidade.onChildInputOut.add(onOut, this);
 
         function start(){
-            
-            ocultarOpcoes(1);
+            groupCidade.children[1].visible = false;
+            groupCidade.children[2].visible = false;
+            gato.visible = false;
+            passaro.visible = false;
+            background.alpha = 0.5;
             groupCidade.children[0].x += 230; 
             cachorro.x += 230;
             groupCidade.children[0].y -= 70; 
             cachorro.y -= 70;
-            game.add.tween(groupCidade.children[0].scale).to( { x: 2, y: 2 }, 3000, Phaser.Easing.Elastic.Out, true);
-            game.add.tween(cachorro.scale).to( { x: 1, y: 1 }, 3000, Phaser.Easing.Elastic.Out, true);
-
-            game.time.events.add(Phaser.Timer.SECOND * 5, initial, this);
+            game.add.tween(groupCidade.children[0].scale).to( { x: 2, y: 2 }, 1000, Phaser.Easing.Elastic.Out, true);
+            game.add.tween(cachorro.scale).to( { x: 1, y: 1 }, 1000, Phaser.Easing.Elastic.Out, true);
         }
 
         function initial(){
-            game.add.tween(groupCidade.children[0].scale).to( { x: 1, y: 1 }, 1000, Phaser.Easing.Linear.In, true);
-            game.add.tween(cachorro.scale).to( { x: 0.5, y: 0.5 }, 1000, Phaser.Easing.Linear.In, true);
-            groupCidade.children[0].x -= 230; 
-            cachorro.x -= 230;
-            groupCidade.children[0].y += 70; 
-            cachorro.y += 70;
+            game.add.tween(groupCidade.children[0].scale).to( { x: 0.2, y: 0.2 }, 500, Phaser.Easing.Elastic.In, true);
+            game.add.tween(cachorro.scale).to( { x: 0.1, y: 0.1 }, 500, Phaser.Easing.Elastic.In, true);
+            groupCidade.children[1].visible = false;
+            groupCidade.children[2].visible = false;
+            gato.visible = false;
+            passaro.visible = false;
             background.alpha = 0.5;
-
-            apresentarOpcoes(1);
-
-            activateButtons();
-        }
-
-        function ocultarOpcoes(numero){
-            background.alpha = 0.5;
-            if(numero == 1){
-                groupCidade.children[1].alpha = 0;
-                groupCidade.children[2].alpha = 0;
-                gato.alpha = 0;
-                passaro.alpha = 0;
-            }
-        }
-
-        function apresentarOpcoes(numero){
-            game.add.tween(background).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-            if(numero == 1){
-                game.add.tween(groupCidade.children[1]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-                game.add.tween(groupCidade.children[2]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-                game.add.tween(gato).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-                game.add.tween(passaro).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-            }
-        }
-
-        function activateButtons(){
-            groupCidade.onChildInputDown.add(onDown, this);
-            groupCidade.onChildInputOver.add(onOver, this);
-            groupCidade.onChildInputOut.add(onOut, this);
+            groupCidade.children[0].x += 230; 
+            cachorro.x += 230;
+            groupCidade.children[0].y -= 70; 
+            cachorro.y -= 70;
         }
 
         function onDown (sprite) {

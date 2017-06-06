@@ -48,7 +48,6 @@ var playState = {
         game.time.events.add(Phaser.Timer.SECOND * 2, start, this);
 
         function start(){
-            
             ocultarOpcoes(1);
             groupCidade.children[0].x += 230; 
             cachorro.x += 230;
@@ -69,7 +68,7 @@ var playState = {
             cachorro.y += 70;
             background.alpha = 0.5;
 
-            apresentarOpcoes(1);
+                        apresentarOpcoes(1);
 
             activateButtons();
         }
