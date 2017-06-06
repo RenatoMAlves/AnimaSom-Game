@@ -100,7 +100,7 @@ var playState = {
 
     verificaSelecionado: function(sprite){
         if(sprite.name == 'opcao-0'){
-            
+            console.log('sucesso');
         }
         else
             console.log('puts');
