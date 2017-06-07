@@ -135,10 +135,37 @@ var playState = {
 
         this.i = 0;
 
+        game.time.events.add(Phaser.Timer.SECOND * 7, activateBotoes, this);
+        function activateBotoes(){
+            this.groupCidade.onChildInputDown.add(onDown, this);
+            this.groupCidade.onChildInputOver.add(onOver, this);
+            this.groupCidade.onChildInputOut.add(onOut, this);
+            this.groupCidade.onChildInputUp.add(onUp, this);
+        }
+
+        function onDown (sprite) {
+            sprite.tint = 0x00ff00;
+        }   
+
+        function onUp (sprite) {
+            sprite.tint = 0x00ff00;
+            this.verificaSelecionado(sprite);
+        }   
+
+        function onOver (sprite) {
+            sprite.tint = 0xffff00;
+        }
+
+        function onOut (sprite) {
+            sprite.tint = 0xff8800;
+            // sprite.tint = Math.random() * 0xffffff;
+
+        }
+
     },
 
     start: function (){ 
-        console.log
+        console.log('teste');
         this.ocultarOpcoes(this.i);
         this.groupAnimais.children[this.i].x = 360;
         this.groupAnimais.children[this.i].y = 80;
@@ -205,41 +232,19 @@ var playState = {
             text.visible = false;
             this.iniciarTempo = false;
             this.tempo = 91;
+            this.i = 0;
             this.start();
         }
             
     },
 
-
     update: function(){
-
-        game.time.events.add(Phaser.Timer.SECOND * 7, activateBotoes, this);
 
         if(this.iniciarTempo){
             this.tempo = this.tempo - Phaser.Timer.SECOND * 1.9/100000;
             this.time.text = "Tempo Restante: "+ parseInt(this.tempo);
         }
-    
-        function activateBotoes(){
-            this.groupCidade.onChildInputDown.add(onDown, this);
-            this.groupCidade.onChildInputOver.add(onOver, this);
-            this.groupCidade.onChildInputOut.add(onOut, this);
-        }
 
-        function onDown (sprite) {
-            sprite.tint = 0x00ff00;
-            this.verificaSelecionado(sprite);
-        }   
-
-        function onOver (sprite) {
-            sprite.tint = 0xffff00;
-        }
-
-        function onOut (sprite) {
-            sprite.tint = 0xff8800;
-            // sprite.tint = Math.random() * 0xffffff;
-
-        }
     },
 
     Win: function(){
