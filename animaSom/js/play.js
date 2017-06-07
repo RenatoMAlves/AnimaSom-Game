@@ -1,3 +1,4 @@
+var teste = 'nome';
 var playState = {
 
     create: function(){
@@ -22,28 +23,37 @@ var playState = {
 
             var button = this.groupCidade.create(x, 200, graphics.generateTexture());
             button.tint = 0xff8800;
+            button.alpha = 0;
             button.name = 'opcao-' + i;
 
             x = x + 400;
         }
         graphics.destroy();
 
-        this.cachorro = game.add.sprite(110, 210, 'cachorro'); 
-        this.cachorro.width = 300;
-        this.cachorro.height = 170;
+        this.groupAnimais = game.add.group();
+
+        var cachorro = this.groupAnimais.create(110, 210, 'cachorro'); 
+        cachorro.width = 300;
+        cachorro.height = 170;
+        cachorro.alpha = 0;
+        cachorro.name = 'cachorro';
         
 
         // Desenha o gato e a borda da box
 
-        this.gato = game.add.sprite(510, 210, 'gato'); 
-        this.gato.width = 300;
-        this.gato.height = 170;
+        var gato = this.groupAnimais.create(510, 210, 'gato'); 
+        gato.width = 300;
+        gato.height = 170;
+        gato.alpha = 0;
+        gato.name = 'gato';
 
         // Desenha o passaro e a borda da box
 
-        this.passaro = game.add.sprite(910, 210, 'passaro'); 
-        this.passaro.width = 300;
-        this.passaro.height = 170;
+        var passaro = this.groupAnimais.create(910, 210, 'passaro'); 
+        passaro.width = 300;
+        passaro.height = 170;
+        passaro.alpha = 0;
+        passaro.name = 'passaro';
         
         // TEXTO DE SUCESSO
 
@@ -99,55 +109,87 @@ var playState = {
 
         this.time = game.add.text(970, 16, 'Tempo Restante: '+ parseInt(this.tempo),{fontSize: '25px', fill:"#f02"})
 
-        game.time.events.add(1000, this.start, this);
+
+        // INICAR JOGO
+
+        textoI = game.add.text(game.world.centerX, game.world.centerY, "- VAMOS COMEÇAR -");
+
+        //  Centers the text
+        textoI.anchor.set(0.5);
+        textoI.align = 'center';
+
+        //  Our font + size
+        textoI.font = 'Arial';
+        textoI.fontWeight = 'bold';
+        textoI.fontSize = 70;
+        textoI.fill = '#00FF00';
+
+        game.time.events.add(3000, function(){
+            textoI.visible = false; 
+            this.start();
+        }, this);
 
         this.iniciarTempo = false;
 
+        // VARIÁVEIS AUXILIARES
+
+        this.i = 0;
+
     },
 
-    start: function (){    
-        this.ocultarOpcoes(1);
-        this.groupCidade.children[0].x = 350; 
-        this.cachorro.x = 360;
-        this.groupCidade.children[0].y = 70; 
-        this.cachorro.y = 80;
-        game.add.tween(this.groupCidade.children[0].scale).to( { x: 2, y: 2 }, 3000, Phaser.Easing.Elastic.Out, true);
-        game.add.tween(this.cachorro.scale).to( { x: 1, y: 1 }, 3000, Phaser.Easing.Elastic.Out, true);
+    start: function (){ 
+        console.log
+        this.ocultarOpcoes(this.i);
+        this.groupAnimais.children[this.i].x = 360;
+        this.groupAnimais.children[this.i].y = 80;
+        this.groupAnimais.children[this.i].alpha = 1;
+        game.add.tween(this.groupAnimais.children[this.i].scale).to({
+            x: 1,
+            y: 1
+        }, 3000, Phaser.Easing.Elastic.Out, true);
 
         game.time.events.add(5000, this.initial, this);
     },
 
     initial: function (){
-        game.add.tween(this.groupCidade.children[0].scale).to( { x: 1, y: 1 }, 1000, Phaser.Easing.Linear.In, true);
-        game.add.tween(this.cachorro.scale).to( { x: 0.5, y: 0.5 }, 1000, Phaser.Easing.Linear.In, true);
-        this.groupCidade.children[0].x = 100; 
-        this.cachorro.x = 110;
-        this.groupCidade.children[0].y = 200; 
-        this.cachorro.y = 210;
+        game.add.tween(this.groupAnimais.children[this.i].scale).to( { x: 0.5, y: 0.5 }, 1000, Phaser.Easing.Linear.None, true);
+        animation = game.add.tween(this.groupCidade.children[this.i]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+        
+        //Posicionamento
+        if(this.i == 0){
+            this.groupAnimais.children[this.i].x = 110;
+        }
+        if(this.i == 1){
+            this.groupAnimais.children[this.i].x = 510;
+        }
+        if(this.i == 2){
+            this.groupAnimais.children[this.i].x = 910;
+        }
+       
+        this.groupAnimais.children[this.i].y = 210;
         this.background.alpha = 0.5;
 
-        this.apresentarOpcoes();
-
-        this.iniciarTempo = true;
+        animation.onComplete.add(function () {	
+            this.i += 1;
+            if(this.i < 3){
+                game.time.events.add(1500, this.start, this);
+            }
+            else{
+                game.add.tween(this.background).to( { alpha: 1 }, 500, Phaser.Easing.Linear.In, true);
+                this.iniciarTempo = true;
+                this.i = 0;
+            }
+        }, this);
     },
 
     ocultarOpcoes: function (){
-        this.background.alpha = 0.5;
-        if(1 == 1){
+        game.add.tween(this.background).to( { alpha: 0.5 }, 500, Phaser.Easing.Linear.In, true);
+        if(this.i == 0){
             this.groupCidade.children[1].alpha = 0;
             this.groupCidade.children[2].alpha = 0;
-            this.gato.alpha = 0;
-            this.passaro.alpha = 0;
-        }
-    },
-
-    apresentarOpcoes: function(){
-        game.add.tween(this.background).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-        if(1 == 1){
-            game.add.tween(this.groupCidade.children[1]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-            game.add.tween(this.groupCidade.children[2]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-            game.add.tween(this.gato).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-            game.add.tween(this.passaro).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+            this.groupCidade.children[0].alpha = 0;
+            this.groupAnimais.children[1].alpha = 0;
+            this.groupAnimais.children[2].alpha = 0;
         }
     },
 
