@@ -14,6 +14,7 @@ var loadState = {
         //Logo do jogo
         game.load.image('logoGame', '../../images/animaSom/logo.png');
         //Botões
+        game.load.image('interrogacao', '../../images/animaSom/interrogacao-transparente.png');
         game.load.image('botaoStart', '../../images/animaSom/UIpack/PNG/yellow_button03.png');
         game.load.image('botaoCadastrar', '../../images/animaSom/UIpack/PNG/blue_button03.png');
         game.load.image('botaoAcompanhamento', '../../images/animaSom/UIpack/PNG/red_button02.png');

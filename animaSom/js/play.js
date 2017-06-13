@@ -23,7 +23,7 @@ var playState = {
             graphics.endFill();
 
             var button = this.groupCidade.create(x, 200, graphics.generateTexture());
-            button.tint = 0xff0000;
+            button.tint = 0x0090ff;
             button.alpha = 0;
             button.name = 'opcao-' + i;
 
@@ -162,16 +162,14 @@ var playState = {
         }
 
         function onOut (sprite) {
-            sprite.tint = 0xff0000;
-            // sprite.tint = Math.random() * 0xffffff;
-
+            sprite.tint = 0x0090ff;
         }
 
     },
 
     start: function (){ 
         this.ocultarOpcoes();
-        this.groupAnimais.children[this.i].x = 360;
+        this.groupAnimais.children[this.i].x = 450;
         this.groupAnimais.children[this.i].y = 80;
         this.groupAnimais.children[this.i].alpha = 1;
         game.add.tween(this.groupAnimais.children[this.i].scale).to({
@@ -184,17 +182,20 @@ var playState = {
 
     initial: function (){
         game.add.tween(this.groupAnimais.children[this.i].scale).to( { x: 0.7, y: 0.7 }, 1000, Phaser.Easing.Linear.None, true);
-        animation = game.add.tween(this.groupCidade.children[this.i]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+        animation = game.add.tween(this.groupCidade.children[this.i]).to( { alpha: 0.7 }, 1000, Phaser.Easing.Linear.In, true);
         
         //Posicionamento
         if(this.i == 0){
             this.groupAnimais.children[this.i].x = 110;
+            this.groupAnimais.children[this.i].alpha = 0.7;
         }
         if(this.i == 1){
             this.groupAnimais.children[this.i].x = 510;
+            this.groupAnimais.children[this.i].alpha = 0.7;
         }
         if(this.i == 2){
             this.groupAnimais.children[this.i].x = 910;
+            this.groupAnimais.children[this.i].alpha = 0.7;
         }
        
         this.groupAnimais.children[this.i].y = 210;
@@ -206,8 +207,8 @@ var playState = {
                 game.time.events.add(1500, this.start, this);
             }
             else{
-                game.add.tween(this.background).to( { alpha: 1 }, 500, Phaser.Easing.Linear.In, true);
-                this.apresentarAnimal();
+                twenBack = game.add.tween(this.background).to( { alpha: 0.5 }, 1000, Phaser.Easing.Linear.In, true);
+                game.time.events.add(1000, this.apresentarAnimal(), this);
                 // this.iniciarTempo = true;
                 // this.i = 0;
             }
@@ -245,12 +246,20 @@ var playState = {
 
     ocultarApresentarTodos: function(bool){
         if(bool == true){
-            this.groupCidade.children[0].alpha = false;
+            this.groupCidade.children[0].visible = false;
             this.groupCidade.children[1].visible = false;
             this.groupCidade.children[2].visible = false;
             this.groupAnimais.children[0].visible = false;
             this.groupAnimais.children[1].visible = false;
             this.groupAnimais.children[2].visible = false;
+        }
+        else{
+            this.groupCidade.children[0].visible = true;
+            this.groupCidade.children[1].visible = true;
+            this.groupCidade.children[2].visible = true;
+            this.groupAnimais.children[0].visible = true;
+            this.groupAnimais.children[1].visible = true;
+            this.groupAnimais.children[2].visible = true;
         }
     },
 
@@ -259,24 +268,28 @@ var playState = {
     },
 
     apresentarAnimal: function(){
-        this.background.alpha = 0.5;
         this.idAnimalAleatorio = this.gerarAnimal();
         // Gera os retangulos que ficarão atras das imagens
         this.ocultarApresentarTodos(true);
         animalM = game.add.graphics(0, 0);
-        animalM.beginFill(0xccc9bb);
+        animalM.beginFill(0xFFFFFF);
         animalM.lineStyle(3, 0x000000, 1);
         animalM.drawRoundedRect(500, 150, 315, 300, 10);
         animalM.endFill();
-        var button = this.groupAnimalMisterioso.create(500, 150, animalM.generateTexture());
-        button.tint = 0x8e8c83;
-        button.alpha = 1;
-        button.name = 'opcao-' + 1;
+        var backAnimalM = game.add.sprite(500, 150, animalM.generateTexture());
+        backAnimalM.tint = 0xe0e0e0;
+        backAnimalM.alpha = 0;
+        backAnimalM.name = 'opcao-' + 1;
+        animalM.destroy();
 
-        var logo = game.add.sprite(500, 170, 'logoGame');
-        logo.width = 300;
-        logo.height = 270;
-        logo.tint = 0x000000
+        var animalA = game.add.sprite(500, 170, 'interrogacao');
+        animalA.width = 300;
+        animalA.height = 270;
+        animalA.alpha = 0;
+
+        game.add.tween(animalA).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+        game.add.tween(backAnimalM).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+
     },
 
     update: function(){
