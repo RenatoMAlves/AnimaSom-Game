@@ -23,13 +23,25 @@ var playState = {
             graphics.endFill();
 
             var button = this.groupCidade.create(x, 200, graphics.generateTexture());
-            button.tint = 0x0090ff;
+            button.tint = 0xffff00;
             button.alpha = 0;
             button.name = 'opcao-' + i;
 
             x = x + 400;
         }
         graphics.destroy();
+
+        animalM = game.add.graphics(0, 0);
+        animalM.beginFill(0xFFFFFF);
+        animalM.lineStyle(3, 0x000000, 1);
+        animalM.drawRoundedRect(500, 150, 315, 300, 10);
+        animalM.endFill();
+        this.backAnimalM = game.add.sprite(500, 150, animalM.generateTexture());
+        this.backAnimalM.tint = 0xe0e0e0;
+        this.backAnimalM.alpha = 0;
+        this.backAnimalM.name = 'opcao-' + 1;
+        animalM.destroy();
+
 
         this.groupAnimais = game.add.group();
 
@@ -56,54 +68,20 @@ var playState = {
         passaro.alpha = 0;
         passaro.name = 'passaro';
         
+        // Audio Animais
+        this.cachorroAudio = game.add.audio('cachorroAudio');
+        this.gatoAudio = game.add.audio('gatoAudio');
+        this.passaroAudio = game.add.audio('passaroAudio');
+        this.vitoriaAudio = game.add.audio('vitoriaAudio');
+
+        // TEXTO DE ACERTOU
+        this.acertou = game.add.sprite(400, 250, 'acertou');
+        this.acertou.visible = false
+ 
         // TEXTO DE SUCESSO
+        this.parabens = game.add.sprite(400, 250, 'parabens');
+        this.parabens.visible = false;
 
-        this.text = null;
-        this.textReflect = null;
-
-        text = game.add.text(game.world.centerX, game.world.centerY -250, "- PARABÉNS -");
-        text.visible = false;
-
-
-        //  Centers the text
-        text.anchor.set(0.5);
-        text.align = 'center';
-
-        //  Our font + size
-        text.font = 'Arial';
-        text.fontWeight = 'bold';
-        text.fontSize = 70;
-        text.fill = '#2bd800';
-
-        //  Here we create our fake reflection :)
-        //  It's just another Text object, with an alpha gradient and flipped vertically
-
-        textReflect = game.add.text(game.world.centerX, game.world.centerY -200, "- PARABÉNS -");
-
-        //  Centers the text
-        textReflect.anchor.set(0.5);
-        textReflect.align = 'center';
-        textReflect.scale.y = -1;
-
-        //  Our font + size
-        textReflect.font = 'Arial';
-        textReflect.fontWeight = 'bold';
-        textReflect.fontSize = 70;
-        textReflect.fill = '#70ff4c';
-
-        //  Here we create a linear gradient on the Text context.
-        //  This uses the exact same method of creating a gradient as you do on a normal Canvas context.
-        var grd = textReflect.context.createLinearGradient(0, 0, 0, text.canvas.height);
-
-        //  Add in 2 color stops
-        grd.addColorStop(0, 'rgba(255,255,255,0)');
-        grd.addColorStop(1, 'rgba(112, 255, 76,0.5)');
-
-        //  And apply to the Text
-        textReflect.fill = grd;
-
-        textReflect.visible = false;
-        text.visible = false;
 
         // FIM DO TEXTO DE SUCESSO
         this.tempo = 90;
@@ -125,6 +103,25 @@ var playState = {
         textoI.fontSize = 70;
         textoI.fill = '#ffcc00';
 
+        // VARIÁVEIS AUXILIARES
+
+        this.i = 0;
+
+        this.status = false;
+
+        this.idAnimalEscondido = 0;
+
+        /*
+        * INICIO DO JOGO
+        */
+
+        this.audiosAnimais = [];
+
+        this.audiosAnimais.push(this.cachorroAudio);
+        this.audiosAnimais.push(this.gatoAudio);
+        this.audiosAnimais.push(this.passaroAudio);
+        this.audiosAnimais.push(this.vitoriaAudio);
+
         this.background.alpha = 0.3;
 
         game.time.events.add(3000, function(){
@@ -134,35 +131,26 @@ var playState = {
 
         this.iniciarTempo = false;
 
-        // VARIÁVEIS AUXILIARES
-
-        this.i = 0;
-
-        this.animalAleatorio = 0;
-
-        game.time.events.add(Phaser.Timer.SECOND * 7, activateBotoes, this);
-        function activateBotoes(){
-            this.groupCidade.onChildInputDown.add(onDown, this);
-            this.groupCidade.onChildInputOver.add(onOver, this);
-            this.groupCidade.onChildInputOut.add(onOut, this);
-            this.groupCidade.onChildInputUp.add(onUp, this);
-        }
+        this.groupCidade.onChildInputDown.add(onDown, this);
+        this.groupCidade.onChildInputOver.add(onOver, this);
+        this.groupCidade.onChildInputOut.add(onOut, this);
+        this.groupCidade.onChildInputUp.add(onUp, this);
 
         function onDown (sprite) {
             sprite.tint = 0x00ff00;
         }   
 
         function onUp (sprite) {
-            sprite.tint = 0x00ff00;
+            sprite.tint = 0xffff00;
             this.verificaSelecionado(sprite);
         }   
 
         function onOver (sprite) {
-            sprite.tint = 0xffff00;
+            sprite.tint = 0x9400ce;
         }
 
         function onOut (sprite) {
-            sprite.tint = 0x0090ff;
+            sprite.tint = 0xffff00;
         }
 
     },
@@ -172,10 +160,14 @@ var playState = {
         this.groupAnimais.children[this.i].x = 450;
         this.groupAnimais.children[this.i].y = 80;
         this.groupAnimais.children[this.i].alpha = 1;
-        game.add.tween(this.groupAnimais.children[this.i].scale).to({
+        var zoomAnimal = game.add.tween(this.groupAnimais.children[this.i].scale).to({
             x: 1,
             y: 1
         }, 3000, Phaser.Easing.Elastic.Out, true);
+
+        zoomAnimal.onComplete.add(function(){
+            this.audiosAnimais[this.i].play();
+        }, this);
 
         game.time.events.add(5000, this.initial, this);
     },
@@ -208,9 +200,9 @@ var playState = {
             }
             else{
                 twenBack = game.add.tween(this.background).to( { alpha: 0.5 }, 1000, Phaser.Easing.Linear.In, true);
-                game.time.events.add(1000, this.apresentarAnimal(), this);
-                // this.iniciarTempo = true;
-                // this.i = 0;
+                twenBack.onComplete.add(function(){
+                    this.gerarAnimal();
+                    game.time.events.add(1000, this.apresentarAnimal, this)}, this);
             }
         }, this);
     },
@@ -227,25 +219,42 @@ var playState = {
     },
 
     verificaSelecionado: function(sprite){
-        if(sprite.name == 'opcao-0'){
-            textReflect.visible = true;
-            text.visible = true;
-            game.time.events.add(5000, this.Win, this);
-            this.iniciarTempo = false;
+        if(sprite.renderOrderID == this.idAnimalEscondido+1){
+            this.idAnimalEscondido += 1;    
+            if(this.idAnimalEscondido < 3){
+                this.ocultarApresentarTodos(true);
+                escureceBackground = game.add.tween(this.background).to( { alpha: 0.6 }, 500, Phaser.Easing.Linear.In, true);
+                escureceBackground.onComplete.add(function(){
+                    this.acertou.visible = true;
+                    acertouVisivel = game.add.tween(this.acertou).to( { alpha: 1 }, 500, Phaser.Easing.Linear.In, true);
+                    acertouVisivel.onComplete.add(function(){
+                        game.time.events.add(1000, this.apresentarAnimal, this);
+                    }, this);
+                }, this);
+            }
+            else{
+                game.add.tween(this.background).to( { alpha: 0.6 }, 500, Phaser.Easing.Linear.In, true);
+                this.ocultarApresentarTodos(true);
+                this.parabens.visible = true;
+                game.add.tween(this.parabens).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+                this.audiosAnimais[3].play();
+                this.iniciarTempo = false;
+                game.time.events.add(6000, this.Win, this);
+            }
         }
         else{
-            textReflect.visible = false;
-            text.visible = false;
+            this.parabens.visible = false;
+            this.acertou.visible = false;
             this.iniciarTempo = false;
             this.tempo = 91;
-            this.i = 0;
-            this.start();
+            this.apresentarAnimal();
         }
             
     },
 
     ocultarApresentarTodos: function(bool){
-        if(bool == true){
+        if(bool === true){
+            this.acertou.visible = false;
             this.groupCidade.children[0].visible = false;
             this.groupCidade.children[1].visible = false;
             this.groupCidade.children[2].visible = false;
@@ -254,33 +263,37 @@ var playState = {
             this.groupAnimais.children[2].visible = false;
         }
         else{
-            this.groupCidade.children[0].visible = true;
-            this.groupCidade.children[1].visible = true;
-            this.groupCidade.children[2].visible = true;
-            this.groupAnimais.children[0].visible = true;
-            this.groupAnimais.children[1].visible = true;
-            this.groupAnimais.children[2].visible = true;
+            animacaoBack = game.add.tween(this.background).to( { alpha: 1 }, 500, Phaser.Easing.Linear.In, true);
+            animacaoBack.onComplete.add(function(){
+                this.groupCidade.children[0].visible = true;
+                this.groupCidade.children[1].visible = true;
+                this.groupCidade.children[2].visible = true;
+                this.groupAnimais.children[0].visible = true;
+                this.groupAnimais.children[1].visible = true;
+                this.groupAnimais.children[2].visible = true;
+                this.groupCidade.children[0].visible = true;
+
+                this.groupCidade.children[0].alpha = 1;
+                this.groupCidade.children[1].alpha = 1;
+                this.groupCidade.children[2].alpha = 1;
+                this.groupAnimais.children[0].alpha = 1;
+                this.groupAnimais.children[1].alpha = 1;
+                this.groupAnimais.children[2].alpha = 1;
+            }, this);
         }
     },
 
     gerarAnimal: function(){
-        return Math.floor((Math.random() * 3) + 0);
+        this.idAnimalAleatorio = Math.floor((Math.random() * 3) + 0);
     },
 
     apresentarAnimal: function(){
-        this.idAnimalAleatorio = this.gerarAnimal();
         // Gera os retangulos que ficarão atras das imagens
         this.ocultarApresentarTodos(true);
-        animalM = game.add.graphics(0, 0);
-        animalM.beginFill(0xFFFFFF);
-        animalM.lineStyle(3, 0x000000, 1);
-        animalM.drawRoundedRect(500, 150, 315, 300, 10);
-        animalM.endFill();
-        var backAnimalM = game.add.sprite(500, 150, animalM.generateTexture());
-        backAnimalM.tint = 0xe0e0e0;
-        backAnimalM.alpha = 0;
-        backAnimalM.name = 'opcao-' + 1;
-        animalM.destroy();
+
+        this.background.alpha = 0.7;
+
+        this.backAnimalM.visible = true;
 
         var animalA = game.add.sprite(500, 170, 'interrogacao');
         animalA.width = 300;
@@ -288,7 +301,21 @@ var playState = {
         animalA.alpha = 0;
 
         game.add.tween(animalA).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
-        game.add.tween(backAnimalM).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+        animacaoAnimalM = game.add.tween(this.backAnimalM).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
+
+        animacaoAnimalM.onComplete.add(function(){
+            this.audiosAnimais[this.idAnimalEscondido].play();
+            game.time.events.add(3000, function(){
+                game.add.tween(animalA).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.In, true);
+                hideBackAnimalM = game.add.tween(this.backAnimalM).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.In, true);
+                hideBackAnimalM.onComplete.add(function(){
+                    animalA.kill();
+                    this.backAnimalM.visible = false;
+                    this.ocultarApresentarTodos(false);
+                    this.iniciarTempo = true;
+                }, this);
+            }, this);
+        }, this);
 
     },
 

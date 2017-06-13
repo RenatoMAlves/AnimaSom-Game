@@ -7,10 +7,23 @@ var loadState = {
         game.load.image('player', '../../images/yellow.png');
         game.load.image('win', '../../images/win.png');
         game.load.image('floresta', '../../images/animaSom/floresta.png');
+
+        // ANIMAIS e BACKGROUND
         game.load.image('cidade', '../../images/animaSom/background-cidade.jpg');
         game.load.image('cachorro', '../../images/animaSom/cachorro-2.png');
         game.load.image('gato', '../../images/animaSom/gato-5.png');
-        game.load.image('passaro', '../../images/animaSom/pombo-400.png');
+        game.load.image('passaro', '../../images/animaSom/passarinho5.png');
+
+        // MENSAGEM DE ACERTOU E PARABÉNS
+        game.load.image('acertou', '../../images/animaSom/VOCE-ACERTOU.png');
+        game.load.image('parabens', '../../images/animaSom/PARABENS.png');
+
+        //Sons do jogo
+        game.load.audio('cachorroAudio', '../../audio/cachorro2.mp3');
+        game.load.audio('passaroAudio', '../../audio/passaro1.mp3');
+        game.load.audio('gatoAudio', '../../audio/gato2.mp3');
+        game.load.audio('vitoriaAudio', '../../audio/comemoracao.mp3');
+        
         //Logo do jogo
         game.load.image('logoGame', '../../images/animaSom/logo.png');
         //Botões
