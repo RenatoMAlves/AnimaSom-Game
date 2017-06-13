@@ -8,9 +8,9 @@ var loadState = {
         game.load.image('win', '../../images/win.png');
         game.load.image('floresta', '../../images/animaSom/floresta.png');
         game.load.image('cidade', '../../images/animaSom/background-cidade.jpg');
-        game.load.image('cachorro', '../../images/animaSom/cachorro.png');
-        game.load.image('gato', '../../images/animaSom/gato.png');
-        game.load.image('passaro', '../../images/animaSom/passaro.png');
+        game.load.image('cachorro', '../../images/animaSom/cachorro-2.png');
+        game.load.image('gato', '../../images/animaSom/gato-5.png');
+        game.load.image('passaro', '../../images/animaSom/pombo-400.png');
         //Logo do jogo
         game.load.image('logoGame', '../../images/animaSom/logo.png');
         //Botões

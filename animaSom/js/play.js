@@ -1,4 +1,3 @@
-var teste = 'nome';
 var playState = {
 
     create: function(){
@@ -10,6 +9,8 @@ var playState = {
 
         this.groupCidade = game.add.group();
 
+        this.groupAnimalMisterioso = game.add.group();
+
         this.groupCidade.inputEnableChildren = true;
 
         var x = 100;
@@ -18,11 +19,11 @@ var playState = {
             // Gera os retangulos que ficarão atras das imagens
             graphics.beginFill(0xFFFFFF);
             graphics.lineStyle(3, 0x05005e, 1);
-            graphics.drawRoundedRect(x, 200, 315, 190, 10);
+            graphics.drawRoundedRect(x, 200, 315, 300, 10);
             graphics.endFill();
 
             var button = this.groupCidade.create(x, 200, graphics.generateTexture());
-            button.tint = 0xff8800;
+            button.tint = 0xff0000;
             button.alpha = 0;
             button.name = 'opcao-' + i;
 
@@ -122,7 +123,9 @@ var playState = {
         textoI.font = 'Arial';
         textoI.fontWeight = 'bold';
         textoI.fontSize = 70;
-        textoI.fill = '#00FF00';
+        textoI.fill = '#ffcc00';
+
+        this.background.alpha = 0.3;
 
         game.time.events.add(3000, function(){
             textoI.visible = false; 
@@ -134,6 +137,8 @@ var playState = {
         // VARIÁVEIS AUXILIARES
 
         this.i = 0;
+
+        this.animalAleatorio = 0;
 
         game.time.events.add(Phaser.Timer.SECOND * 7, activateBotoes, this);
         function activateBotoes(){
@@ -157,7 +162,7 @@ var playState = {
         }
 
         function onOut (sprite) {
-            sprite.tint = 0xff8800;
+            sprite.tint = 0xff0000;
             // sprite.tint = Math.random() * 0xffffff;
 
         }
@@ -165,8 +170,7 @@ var playState = {
     },
 
     start: function (){ 
-        console.log('teste');
-        this.ocultarOpcoes(this.i);
+        this.ocultarOpcoes();
         this.groupAnimais.children[this.i].x = 360;
         this.groupAnimais.children[this.i].y = 80;
         this.groupAnimais.children[this.i].alpha = 1;
@@ -179,7 +183,7 @@ var playState = {
     },
 
     initial: function (){
-        game.add.tween(this.groupAnimais.children[this.i].scale).to( { x: 0.5, y: 0.5 }, 1000, Phaser.Easing.Linear.None, true);
+        game.add.tween(this.groupAnimais.children[this.i].scale).to( { x: 0.7, y: 0.7 }, 1000, Phaser.Easing.Linear.None, true);
         animation = game.add.tween(this.groupCidade.children[this.i]).to( { alpha: 1 }, 1000, Phaser.Easing.Linear.In, true);
         
         //Posicionamento
@@ -203,8 +207,9 @@ var playState = {
             }
             else{
                 game.add.tween(this.background).to( { alpha: 1 }, 500, Phaser.Easing.Linear.In, true);
-                this.iniciarTempo = true;
-                this.i = 0;
+                this.apresentarAnimal();
+                // this.iniciarTempo = true;
+                // this.i = 0;
             }
         }, this);
     },
@@ -236,6 +241,42 @@ var playState = {
             this.start();
         }
             
+    },
+
+    ocultarApresentarTodos: function(bool){
+        if(bool == true){
+            this.groupCidade.children[0].alpha = false;
+            this.groupCidade.children[1].visible = false;
+            this.groupCidade.children[2].visible = false;
+            this.groupAnimais.children[0].visible = false;
+            this.groupAnimais.children[1].visible = false;
+            this.groupAnimais.children[2].visible = false;
+        }
+    },
+
+    gerarAnimal: function(){
+        return Math.floor((Math.random() * 3) + 0);
+    },
+
+    apresentarAnimal: function(){
+        this.background.alpha = 0.5;
+        this.idAnimalAleatorio = this.gerarAnimal();
+        // Gera os retangulos que ficarão atras das imagens
+        this.ocultarApresentarTodos(true);
+        animalM = game.add.graphics(0, 0);
+        animalM.beginFill(0xccc9bb);
+        animalM.lineStyle(3, 0x000000, 1);
+        animalM.drawRoundedRect(500, 150, 315, 300, 10);
+        animalM.endFill();
+        var button = this.groupAnimalMisterioso.create(500, 150, animalM.generateTexture());
+        button.tint = 0x8e8c83;
+        button.alpha = 1;
+        button.name = 'opcao-' + 1;
+
+        var logo = game.add.sprite(500, 170, 'logoGame');
+        logo.width = 300;
+        logo.height = 270;
+        logo.tint = 0x000000
     },
 
     update: function(){
